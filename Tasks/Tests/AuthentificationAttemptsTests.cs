@@ -9,8 +9,8 @@ public class AuthentificationAttemptsTests
     {
         var auth = new AuthentificationAttempts("King", "Lion");
         var result = auth.Authenticate("King", "Lion");
-        Assert.That(result, Is.True);
-        Assert.That(auth.TriesRemaining, Is.EqualTo(3));
+        Assert.That(result.IsAuthenticated, Is.True);
+        Assert.That(result.TriesRemaining, Is.EqualTo(3));
     }
     
     [Test]
@@ -18,8 +18,8 @@ public class AuthentificationAttemptsTests
     {
         var auth = new AuthentificationAttempts("King", "Lion");
         var result = auth.Authenticate("Prince", "Lion");
-        Assert.That(result, Is.False);
-        Assert.That(auth.TriesRemaining, Is.EqualTo(2));
+        Assert.That(result.IsAuthenticated, Is.False);
+        Assert.That(result.TriesRemaining, Is.EqualTo(2));
     }
 
     [Test]
@@ -31,8 +31,8 @@ public class AuthentificationAttemptsTests
         auth.Authenticate("Martin", "Muller");
         var result = auth.Authenticate("Martin", "Nuter");
         
-        Assert.That(result, Is.False);
-        Assert.That(auth.TriesRemaining, Is.EqualTo(0));
+        Assert.That(result.IsAuthenticated, Is.False);
+        Assert.That(result.TriesRemaining, Is.EqualTo(0));
     }
     
     [Test]
@@ -44,22 +44,23 @@ public class AuthentificationAttemptsTests
         auth.Authenticate("Martin", "Muller");
         var result = auth.Authenticate("Martin", "Luter");
         
-        Assert.That(result, Is.True);
-        Assert.That(auth.TriesRemaining, Is.EqualTo(3));
+        Assert.That(result.IsAuthenticated, Is.True);
+        Assert.That(result.TriesRemaining, Is.EqualTo(3));
     }
     
     [Test]
     public void PropertyFalseAutentificationAttempts()
     {
         var auth = new AuthentificationAttempts("King", "Lion");
-        Assert.That(auth.IsLogged,Is.False);
+        var result = auth.Authenticate("Prince", "Lion");
+        Assert.That(result.IsAuthenticated, Is.False);
     }
     
     [Test]
     public void PropertyTrueAutentificationAttempts()
     {
         var auth = new AuthentificationAttempts("King", "Lion");
-        auth.Authenticate("King", "Lion");
-        Assert.That(auth.IsLogged,Is.True);
+        var result = auth.Authenticate("King", "Lion");
+        Assert.That(result.IsAuthenticated,Is.True);
     }
 }

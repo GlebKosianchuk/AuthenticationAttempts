@@ -1,14 +1,22 @@
 ﻿namespace Tasks;
 
+public struct AuthenticationResult
+{
+    public bool IsAuthenticated { get; }
+    public int TriesRemaining { get; }
+
+    public AuthenticationResult(bool isAuthenticated, int triesRemaining)
+    {
+        IsAuthenticated = isAuthenticated;
+        TriesRemaining = triesRemaining;
+    }
+}
 public class AuthentificationAttempts
 {
     private readonly int _maxTries;
     private readonly string _correctLogin;
     private readonly string _correctPassword;
     private int _triesCount;
-    
-    public bool IsLogged { get; private set; }
-    public int TriesRemaining => _maxTries - _triesCount;
 
     public AuthentificationAttempts(string correctLogin, string correctPassword, int maxTries = 3)
     {
@@ -18,22 +26,21 @@ public class AuthentificationAttempts
         _triesCount = 0;
     }
 
-    public bool Authenticate(string login, string password)
+    public AuthenticationResult Authenticate(string login, string password)
     {
         if (_triesCount >= _maxTries)
         {
-            return false;
+            return new AuthenticationResult(false,0);
         }
 
         if (login == _correctLogin && password == _correctPassword)
         {
             _triesCount = 0;
-            IsLogged = true;
-            return true;
+            return new AuthenticationResult(true,_maxTries);
         }
 
         _triesCount++;
-        return false;
+        return new AuthenticationResult(false,_maxTries - _triesCount);
     }
     
 }
