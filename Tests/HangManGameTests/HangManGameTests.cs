@@ -20,7 +20,7 @@ public class HangManGameTests
     }
 
     [Test]
-    public void Game_GuessIncorrectLetter_ExpectTreisLeftDecreased()
+    public void Game_GuessIncorrectLetter_ExpectTriesLeftDecreased()
     {
         var game = new HangMan("ronaldo");
         game.Guess('y');
@@ -52,6 +52,4 @@ public class HangManGameTests
         game.Guess('p');
         Assert.That(game.Victory,Is.False);
     }
-    
-    
 }

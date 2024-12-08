@@ -8,16 +8,26 @@ public class HangMan
     private int maxTries;
     private int triesLeft;
 
-    public string WordToShow => wordToShow;
+    public string WordToShow
+    {
+        get
+        {
+            var result = "";
+            foreach (var c in wordToGuess)
+            {
+                result += guessedLetters.Contains(c) ? c.ToString() : "_";
+            }
+            return result;
+        }
+    }
     public int TriesLeft => triesLeft;
     public bool GameOver => triesLeft == 0 || wordToGuess == wordToShow;
-    public bool Victory => wordToGuess == wordToShow;
+    public bool Victory => wordToGuess == WordToShow;
 
     public HangMan(string wordToGuess, int maxTries = 5)
     {
         this.wordToGuess = wordToGuess.ToLower();
         this.maxTries = maxTries;
-        wordToShow = new string('_', wordToGuess.Length);
         guessedLetters = new List<char>();
         triesLeft = maxTries;
     }
@@ -35,7 +45,6 @@ public class HangMan
 
         if (wordToGuess.Contains(letter))
         {
-            NewWordToShow(letter);
             return (true);
         }
         else
@@ -43,19 +52,5 @@ public class HangMan
             triesLeft--;
             return false;
         }
-    }
-
-    public void NewWordToShow(char letter)
-    {
-        var newWord = wordToShow.ToCharArray();
-
-        for (var i = 0; i < wordToGuess.Length; i++)
-        {
-            if (wordToGuess[i] == letter)
-            {
-                newWord[i] = letter;
-            }
-        }
-        wordToShow = new string(newWord);
     }
 }
